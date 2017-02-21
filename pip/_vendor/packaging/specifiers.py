@@ -619,7 +619,9 @@ class SpecifierSet(BaseSpecifier):
         return "<SpecifierSet({0!r}{1})>".format(str(self), pre)
 
     def __str__(self):
-        return ",".join(sorted(str(s) for s in self._specs))
+        # make sure that ('>', '3.5') comes before ('<', '3.6')
+        specs = sorted(self._specs, key=lambda x: x._spec[1])
+        return ",".join(sorted(str(s) for s in specs))
 
     def __hash__(self):
         return hash(self._specs)
